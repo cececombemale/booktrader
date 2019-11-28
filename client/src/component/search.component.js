@@ -4,6 +4,21 @@ import { Link } from "react-router-dom";
 
 import SearchIcon from "../media/search.svg"
 export default class Search extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { booklist:[] };
+      }
+    async componentDidMount() {
+        try {
+            const res = await fetch('http://localhost:8000/api/book/?format=json');
+            const booklist = await res.json();
+            this.setState({
+                booklist
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
     render() {
         return (
             <div id="search-background">
@@ -12,60 +27,37 @@ export default class Search extends Component {
                     <input autoComplete="off" type="search" id="search" placeholder="Search... (ISBN)"></input>
                 </div>
                 <div id="searchBody">
-                    <div id="bookItem">
-                        <div>
+                    {this.state.booklist.map(item => (
+                        <div id="bookItem">
                             <div>
-                                <div id="bookTitle">
-                                    Basic Quantum Mechanics <span id="statusNew">NEW!</span>
-                                </div>
                                 <div>
-                                    Author: <span> Kyriakos Tamvakis</span>
+                                    <div id="bookTitle">
+                                        {item.title} <span id="statusNew">NEW!</span>
+                                    </div>
+                                    <div>
+                                        Edition: <span>{item.edition}</span>
+                                    </div>
+                                    <div>
+                                        Author: <span> {item.author}</span>
+                                    </div>
+                                    <div>New York, NY 10003</div>
                                 </div>
-                                <div>New York, NY 10003</div>
-                            </div>
 
-                            <div id="grower"></div>
-
-                            <div id="grower"></div>
-                            <div id="right">
-                                ISBN:
+                                <div id="grower"></div>
+                                <div id="grower"></div>
+                                <div id="right">
+                                    ISBN:
                                 <span>
-                                    3030227766
-                                </span>
-                                <div>
-                                    Value: $40
+                                        {item.isbn}
+                                    </span>
+                                    <div>
+                                        Value: $40
+                                </div>
                                 </div>
                             </div>
+
                         </div>
-
-                    </div>
-                    <div id="bookItem">
-                        <div>
-                            <div>
-                                <div id="bookTitle">
-                                    Basic Quantum Mechanics <span id="statusNew">NEW!</span>
-                                </div>
-                                <div>
-                                    Author: <span> Kyriakos Tamvakis</span>
-                                </div>
-                                <div>New York, NY 10003</div>
-                            </div>
-
-                            <div id="grower"></div>
-
-                            <div id="grower"></div>
-                            <div id="right">
-                                ISBN:
-                                <span>
-                                    3030227766
-                                </span>
-                                <div>
-                                    Value: $40
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    ))}
                 </div>
             </div>
         )
