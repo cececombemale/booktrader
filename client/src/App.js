@@ -19,7 +19,7 @@ function App() {
         <div id="navbar">
           <div>
             <Link to="/">
-              <img id="logo" src={Logo}></img>
+              <img id="logo" alt="logo" src={Logo}></img>
             </Link>
           </div>
           <Link to="/">

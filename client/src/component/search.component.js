@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import SearchIcon from "../media/search.svg"
 export default class Search extends Component {
     constructor(props) {
@@ -22,7 +21,7 @@ export default class Search extends Component {
         return (
             <div id="search-background">
                 <div className="search-container" id="mainsearch">
-                    <img className="icon" src={SearchIcon}></img>
+                    <img alt="Search Icon" className="icon" src={SearchIcon}></img>
                     <input autoComplete="off" type="search" id="search" placeholder="Search... (ISBN)"></input>
                 </div>
                 <div id="searchBody">

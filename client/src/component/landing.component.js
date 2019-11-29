@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
 import '../App.css';
 import Search from "../media/search.svg"
 
@@ -11,7 +10,7 @@ export default class Landing extends Component {
                 <div>
                     <h1 id="search-title">Welcome</h1>
                     <div className="search-container">
-                        <img className="icon" src={Search}></img>
+                        <img alt="Search Icon" className="icon" src={Search}></img>
                         <input autoComplete="off" type="search" id="search" placeholder="Search... (ISBN)"></input>
                     </div>
                     <div id="subtext">
