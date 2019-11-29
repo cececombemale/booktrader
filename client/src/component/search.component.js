@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-
 import SearchIcon from "../media/search.svg"
 export default class Search extends Component {
     constructor(props) {
