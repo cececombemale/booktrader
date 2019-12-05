@@ -49,7 +49,7 @@ function App() {
 
         </div>
         <div id="content">
-
+{/* Change to private Route after setting */}
           <Route exact path="/">
             <Landing />
           </Route>
