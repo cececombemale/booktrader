@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Link, Redirect } from "react-router-dom";
-
+import Cookies from 'universal-cookie'
 
 export default class Register extends Component {
     constructor(props) {
@@ -25,9 +25,7 @@ export default class Register extends Component {
     }
     submitData() {
         // Check if register is correctedly filled here.
-        this.setState({
-            navigate:false
-        })
+        
         try {
             fetch("http://localhost:8000/api/user/register", {
                 method: "post",
@@ -46,8 +44,18 @@ export default class Register extends Component {
 
             })
                 .then((response) => {
-                    console.log(response)
+                    // set cookie
+                    const cookies = new Cookies();
+                    cookies.set('ID',"1234",{path:'/'});
+                    console.log("cookies set to: ", cookies);
+                    //if error, flag smt
 
+
+                    // Redirect if success
+                    console.log(response)
+                    this.setState({
+                        navigate:false
+                    })
                 });
 
         } catch (e) {
