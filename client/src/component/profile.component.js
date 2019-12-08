@@ -7,6 +7,7 @@ export default class Profile extends Component {
         super(props);
         this.state = {
             username : "",
+            email:"",
             navigate: false
         }
     }
@@ -27,7 +28,8 @@ export default class Profile extends Component {
             console.log(reply)
             // TODO: Add check to see if returned in good
             this.setState({
-                username : reply.username
+                username : reply.username,
+                email:reply.email,
             });
         } catch (e) {
             console.log(e);
@@ -56,8 +58,8 @@ export default class Profile extends Component {
                 <div id="profilePadder">
                     <div id="profile">
                         <div>
-                            <h1 id="profileWelcome"> Welcome, {this.state.username}!</h1>
-                            <div></div>
+                            <h1 id="profileWelcome"> Welcome, <span className="cap">{this.state.username}</span>!</h1>
+                            <div id="email" >( Email: <a href={"mailto:" + this.state.email}>{this.state.email}</a> )</div>
                         </div>
                         <div className="row">
 

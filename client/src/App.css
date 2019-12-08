@@ -22,6 +22,12 @@ a{
 .navitem{
   margin-left:20px;
 }
+.cap{
+  text-transform: capitalize;
+}
+#email{
+  color:grey;
+}
 #navProfile{
   display:none;
 }
