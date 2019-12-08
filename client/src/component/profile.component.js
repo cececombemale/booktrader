@@ -1,15 +1,22 @@
 
 import React, { Component } from 'react';
-
+import {Redirect} from "react-router-dom"
 
 export default class Profile extends Component {
     constructor(props){
         super(props);
         this.state = {
-            username : ""
+            username : "",
+            navigate: false
         }
     }
     async componentDidMount() {
+        if(localStorage.getItem("token") == null){
+                this.setState({
+                    navigate: true
+                })
+        }
+
         try {
             const res = await fetch('http://localhost:8000/api/profile',{
                 headers: {
@@ -38,6 +45,12 @@ export default class Profile extends Component {
         }
     }
     render() {
+        const { navigate } = this.state
+
+        if (navigate) {
+            return <Redirect to="/login" push={true} />
+        }
+
         return (
             <div id="landing" className="profileLanding">
                 <div id="profilePadder">

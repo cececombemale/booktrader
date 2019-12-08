@@ -51,6 +51,9 @@ export default class Login extends Component {
     componentDidMount() {
 
         if (localStorage.getItem("token") != null) {
+            this.setState({
+                navigate:true
+            })
             document.getElementById("navProfile").style.display = "flex"
             document.getElementById("navLogout").style.display = "flex"
             document.getElementById("navLogin").style.display = "none"
@@ -72,7 +75,7 @@ export default class Login extends Component {
                     <h1 id="loginTitle">Login</h1>
                     <div id="loginBody">
                         <input name="username" onChange={this.handleChange} placeholder="Username"></input>
-                        <input name="password" onChange={this.handleChange} placeholder="Password"></input>
+                        <input type="password" name="password" onChange={this.handleChange} placeholder="Password"></input>
                         <button onClick={this.handleSubmit} >Login</button>
                     </div>
 

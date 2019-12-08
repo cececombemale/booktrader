@@ -19,6 +19,9 @@ export default class Register extends Component {
     }
     componentDidMount() {
         if(localStorage.getItem("token") != null){
+            this.setState({
+                navigate:true
+            })
             document.getElementById("navProfile").style.display = "flex"
             document.getElementById("navLogout").style.display = "flex"
             document.getElementById("navLogin").style.display = "none"
@@ -74,7 +77,7 @@ export default class Register extends Component {
         const { navigate } = this.state
 
         if (navigate) {
-            return <Redirect to="/" push={true} />
+            return <Redirect to="/profile" push={true} />
         }
 
         return (
@@ -86,7 +89,7 @@ export default class Register extends Component {
                         <input name="last_name" onChange={this.handleChange} placeholder="Last Name"></input>
                         <input name="email" onChange={this.handleChange} placeholder="Email"></input>
                         <input name="username" onChange={this.handleChange} placeholder="Username"></input>
-                        <input name="password" onChange={this.handleChange} placeholder="Password"></input>
+                        <input type="password" name="password" onChange={this.handleChange} placeholder="Password"></input>
                         <button onClick={this.submitData}>Create Account</button>
                     </div>
 
