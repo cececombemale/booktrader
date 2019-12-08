@@ -3,13 +3,47 @@ import React, { Component } from 'react';
 
 
 export default class Profile extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            username : ""
+        }
+    }
+    async componentDidMount() {
+        try {
+            const res = await fetch('http://localhost:8000/api/profile',{
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                  }
+            });
+            const reply = await res.json();
+            console.log(reply)
+            // TODO: Add check to see if returned in good
+            this.setState({
+                username : reply.username
+            });
+        } catch (e) {
+            console.log(e);
+        }
+
+        
+        if(localStorage.getItem("token") != null){
+            document.getElementById("navProfile").style.display = "flex"
+            document.getElementById("navLogout").style.display = "flex"
+            document.getElementById("navLogin").style.display = "none"
+        }else{
+            document.getElementById("navProfile").style.display = "none"
+            document.getElementById("navLogout").style.display = "none"
+            document.getElementById("navLogin").style.display = "flex"
+        }
+    }
     render() {
         return (
             <div id="landing" className="profileLanding">
                 <div id="profilePadder">
                     <div id="profile">
                         <div>
-                            <h1 id="profileWelcome"> Welcome, Rohit!</h1>
+                            <h1 id="profileWelcome"> Welcome, {this.state.username}!</h1>
                             <div></div>
                         </div>
                         <div className="row">

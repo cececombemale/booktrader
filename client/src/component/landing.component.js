@@ -4,6 +4,17 @@ import '../App.css';
 import Search from "../media/search.svg"
 
 export default class Landing extends Component {
+    componentDidMount() {
+        if(localStorage.getItem("token") != null){
+            document.getElementById("navProfile").style.display = "flex"
+            document.getElementById("navLogout").style.display = "flex"
+            document.getElementById("navLogin").style.display = "none"
+        }else{
+            document.getElementById("navProfile").style.display = "none"
+            document.getElementById("navLogout").style.display = "none"
+            document.getElementById("navLogin").style.display = "flex"
+        }
+    }
     render() {
         return (
             <div id="landing">

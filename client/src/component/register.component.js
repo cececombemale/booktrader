@@ -17,6 +17,17 @@ export default class Register extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.submitData = this.submitData.bind(this)
     }
+    componentDidMount() {
+        if(localStorage.getItem("token") != null){
+            document.getElementById("navProfile").style.display = "flex"
+            document.getElementById("navLogout").style.display = "flex"
+            document.getElementById("navLogin").style.display = "none"
+        }else{
+            document.getElementById("navProfile").style.display = "none"
+            document.getElementById("navLogout").style.display = "none"
+            document.getElementById("navLogin").style.display = "flex"
+        }
+    }
     handleChange(e) {
         console.log(e.target.name + " and " + e.target.value)
         this.setState({
@@ -43,19 +54,16 @@ export default class Register extends Component {
                 })
 
             })
-                .then((response) => {
-                    // set cookie
-                    const cookies = new Cookies();
-                    cookies.set('ID',"1234",{path:'/'});
-                    console.log("cookies set to: ", cookies);
-                    //if error, flag smt
-
-
-                    // Redirect if success
-                    console.log(response)
-                    this.setState({
-                        navigate:false
-                    })
+                .then(res =>res.json())
+                .then(json => {
+                    localStorage.setItem('token',json.token);
+                    console.log(json)
+                    if(json.token != null){
+                        this.setState({
+                            navigate:true
+                        })
+                    } 
+                    //TODO: Handle faillure
                 });
 
         } catch (e) {

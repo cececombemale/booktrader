@@ -10,13 +10,24 @@ export default class Search extends Component {
         try {
             const res = await fetch('http://localhost:8000/api/book/?format=json');
             const booklist = await res.json();
+            // TODO: Add check to see if returned in good
             this.setState({
                 booklist
             });
         } catch (e) {
             console.log(e);
         }
+        if(localStorage.getItem("token") != null){
+            document.getElementById("navProfile").style.display = "flex"
+            document.getElementById("navLogout").style.display = "flex"
+            document.getElementById("navLogin").style.display = "none"
+        }else{
+            document.getElementById("navProfile").style.display = "none"
+            document.getElementById("navLogout").style.display = "none"
+            document.getElementById("navLogin").style.display = "flex"
+        }
     }
+    
     render() {
         return (
             <div id="search-background">
