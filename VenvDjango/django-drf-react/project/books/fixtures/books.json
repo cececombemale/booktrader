@@ -1,0 +1,42 @@
+[
+    {
+        "model": "books.Book",
+        "pk": 1,
+        "fields": {
+            "isbn": "1449373321",
+            "title": "Designing Data-Intensive Applications: The Big Ideas Behind Reliable, Scalable, and Maintainable Systems",
+            "author": "Martin Kleppman",
+            "edition": "1"
+        }
+    },
+    {
+        "model": "books.Book",
+        "pk": 2,
+        "fields": {
+            "isbn": "9781338299144",
+            "title": "Harry Potter and the Sorcerer's Stone",
+            "author": "J.K. Rowling",
+            "edition": "1"
+        }
+    },
+    {
+        "model": "books.Book",
+        "pk": 3,
+        "fields": {
+            "isbn": "0123456789",
+            "title": "How to Make Large Scale Web Apps",
+            "author": "Yair Sovran",
+            "edition": "1"
+        }
+    },
+    {
+        "model": "books.Book",
+        "pk": 4,
+        "fields": {
+            "isbn": "5555555555",
+            "title": "Fishing 101",
+            "author": "Captain Ahab",
+            "edition": "1"
+        }
+    }
+]
