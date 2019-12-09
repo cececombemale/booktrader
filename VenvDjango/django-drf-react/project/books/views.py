@@ -77,9 +77,9 @@ def registerUser(request):
         form = UserCreationForm()
     return HttpResponse(form)
 
-def login(request):
-    if request.method == 'POST':
-        form = User
+# def login(request):
+#     if request.method == 'POST':
+#         form = User
 
 # Custom user registration view from https://stackoverflow.com/questions/16857450/how-to-register-users-in-django-rest-framework#29391122
 # @api_view(['POST'])
