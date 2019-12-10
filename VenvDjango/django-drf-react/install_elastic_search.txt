@@ -17,4 +17,3 @@ cd elasticsearch-7.5.0/bin
 
 ## build indexing in elastic search server
 python manage.py search_index --rebuild
-

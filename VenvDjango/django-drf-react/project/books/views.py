@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from books.models import Book, Has, User
 from books.serializers import BookSerializer, HasSerializer, UserSerializer
+from django.http import HttpResponse 
 
 class BookListCreate(generics.ListCreateAPIView):
     queryset = Book.objects.all()
@@ -21,6 +22,9 @@ class UserCreate(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+def search_index(request): 
+    return HttpResponse("Awesome search coming soon!")
+    
 # Custom user registration view from https://stackoverflow.com/questions/16857450/how-to-register-users-in-django-rest-framework#29391122
 # @api_view(['POST'])
 # def create_auth(request):
