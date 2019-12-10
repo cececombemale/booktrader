@@ -4,8 +4,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from books.models import Book, Has, User
 from rest_framework import permissions, status
-
+from django.http import HttpResponse
 from books.serializers import BookSerializer, HasSerializer, UserSerializer, UserSerializerWithToken
+from django.views.decorators.csrf import csrf_exempt
 
 @api_view(['GET'])
 def current_user(request):
@@ -51,6 +52,21 @@ def profile(request):
     
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
+
+@csrf_exempt
+def addBook(request):
+    if request.method == 'POST':
+        # form = 6(request.POST)
+        print(request.POST)
+        new_book = Book()
+        new_book.isbn = request.POST['isbn']
+        new_book.title = request.POST['title']
+        new_book.author = request.POST['author']
+        new_book.edition = request.POST['edition']
+        new_book.save()
+        return HttpResponse("Success")
+    else:
+        return HttpResponse("please use POST request")
 # Custom user registration view from https://stackoverflow.com/questions/16857450/how-to-register-users-in-django-rest-framework#29391122
 # @api_view(['POST'])
 # def create_auth(request):

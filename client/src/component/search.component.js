@@ -1,10 +1,16 @@
 
 import React, { Component } from 'react';
 import SearchIcon from "../media/search.svg"
+import elasticsearch from 'elasticsearch'
 export default class Search extends Component {
     constructor(props) {
         super(props);
-        this.state = { booklist:[] };
+        this.state = { 
+            query : "",
+            booklist:[],
+        };
+        this.handleSearch = this.handleSearch.bind(this)
+        this.updateState = this.updateState.bind(this)  
       }
     async componentDidMount() {
         try {
@@ -27,13 +33,36 @@ export default class Search extends Component {
             document.getElementById("navLogin").style.display = "flex"
         }
     }
-    
+    handleSearch(){
+        console.log("SEARCH: ", this.state.query)
+        var client = new elasticsearch.Client({
+            host: 'localhost:9200',
+            // log: 'trace',
+            // apiVersion: '7.2', // use the same version of your Elasticsearch instance
+          });
+        try {
+            const response = await client.search({
+              q: 'will'
+            });
+            console.log(response.hits.hits)
+          } catch (error) {
+            console.trace(error.message)
+          }
+    }
+    updateState(e){
+        
+        this.setState({
+            query:e.target.value
+        })
+        console.log(this.state.query)
+    }
     render() {
         return (
             <div id="search-background">
                 <div className="search-container" id="mainsearch">
                     <img alt="Search Icon" className="icon" src={SearchIcon}></img>
-                    <input autoComplete="off" type="search" id="search" placeholder="Search... (ISBN)"></input>
+                    <input onChange={this.updateState}  autoComplete="off" type="search" id="search" placeholder="Search... (ISBN)"></input>
+                    <button onClick={this.handleSearch}>GO!</button>
                 </div>
                 <div id="searchBody">
                     {this.state.booklist.map(item => (
