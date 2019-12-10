@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your models here.
 class Book(models.Model):
@@ -27,12 +28,18 @@ class Has(models.Model):
     condition = models.CharField(max_length=2, choices=CONDITION_CHOICES, default=GOOD)
     added_at = models.DateTimeField(auto_now_add=True)
 
-class ListingForm(ModelForm):
-    class Meta:
-        model = Has
-        fields = ("isbn", "condition",)
+# class ListingForm(ModelForm):
+#     class Meta:
+#         model = Has
+#         fields = ("isbn", "condition",)
 
-class BookForm(ModelForm):
-    class Meta:
-        model = Book
-        fields = ("isbn", "title", "author", "edition",)
+# class BookForm(ModelForm):
+#     class Meta:
+#         model = Book
+#         fields = ("isbn", "title", "author", "edition",)
+
+# class MyUserCreationForm(UserCreationForm):
+#   class Meta(UserCreationForm.Meta):
+#     help_texts = {
+#       'username' : '',
+#     }

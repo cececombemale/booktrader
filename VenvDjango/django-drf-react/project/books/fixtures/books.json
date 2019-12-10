@@ -38,5 +38,15 @@
             "author": "Captain Ahab",
             "edition": "1"
         }
+    },
+    {
+        "model": "books.Has",
+        "pk": 1,
+        "fields": {
+            "isbn": "5555555555",
+            "user": 5,
+            "condition": "G",
+            "added_at": "2019-12-10 00:00:00"
+        }
     }
 ]

@@ -1,14 +1,17 @@
 # from django.shortcuts import render
 from rest_framework import generics
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from books.models import Book, Has, User, ListingForm, BookForm
+from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.response import Response
+from books.models import Book, Has, User
 from books.serializers import BookSerializer, HasSerializer, UserSerializer
 from django.http import HttpResponse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 import datetime
+import json
 
 class BookListCreate(generics.ListCreateAPIView):
     queryset = Book.objects.all()
@@ -26,23 +29,30 @@ class UserCreate(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+# @api_view(('GET', 'POST'))
 def home(request):
     '''List of my current listings'''
-    if request.method == 'GET':
-        try:
-            listings = Has.objects.filter(user=request.user)
-        except TypeError:
-            listings = Has.objects.all()
-    return HttpResponse(listings, content_type='application/json')
+    name = "Stranger"
+    if request.user.is_authenticated:
+        name = request.user.first_name # might need to query DB for first name with username?
+    try:
+        listings = Has.objects.filter(user=request.user)
+    except TypeError:
+        listings = Has.objects.all()[0:10]
+    serializer = HasSerializer(listings, many=True)
+    context = {
+        'listings': json.dumps(serializer.data),
+        'first_name': name
+    }
+    return HttpResponse(json.dumps(context))
 
 @login_required
 def listing(request):
     if request.method == 'POST':
-        form = ListingForm(request.POST)
-        new_listing = form.save(commit=False)
-        new_listing.isbn = request.isbn
-        new_listing.user = request.user
-        new_listing.added_at = datetime.datetime.now()
+        # form = ListingForm(request.POST)
+        new_listing = Has(isbn=request.POST['isbn'])
+        new_listing.condition = request.POST['condition']
+        new_listing.user = request.user # hope this works
         new_listing.save()
         return home(request)
     else:
@@ -51,23 +61,29 @@ def listing(request):
 
 def addBook(request):
     if request.method == 'POST':
-        form = BookForm(request.POST)
-        new_book = form.save(commit=False)
-        new_book.isbn = request.isbn
-        new_book.title = request.title
-        new_book.author = request.author
-        new_book.edition = request.edition
+        # form = BookForm(request.POST)
+        new_book = Book()
+        new_book.isbn = request.POST['isbn']
+        new_book.title = request.POST['title']
+        new_book.author = request.POST['author']
+        new_book.edition = request.POST['edition']
+        new_book.save()
         return home(request)
     else:
         form = BookForm()
     return HttpResponse(form)
 
+@csrf_exempt # should probably include the csrf token somewhere in the HTML block
 def registerUser(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        new_user = form.save(commit=True)
-        user = authenticate(username=new_user.username,
-                            password=form.clean_password2())
+        # form = MyUserCreationForm(request.POST)
+        new_user = User.objects.create_user(request.POST['username'])
+        new_user.set_password(request.POST['password1'])
+        new_user.first_name = request.POST['first_name']
+        new_user.first_name = request.POST['last_name']
+        new_user.email = request.POST['email']
+        new_user.save()
+        user = authenticate(username=new_user.username, password=request.POST['password1'])
         if user is not None:
             login(request, user)
         else:
@@ -77,6 +93,14 @@ def registerUser(request):
         form = UserCreationForm()
     return HttpResponse(form)
 
+def loginUser(request):
+    if request.method == 'POST':
+        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+    if user is not None:
+        login(request, user)
+    else:
+        raise Exception
+    return home(request)
 # def login(request):
 #     if request.method == 'POST':
 #         form = User

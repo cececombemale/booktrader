@@ -8,7 +8,8 @@ urlpatterns = [
     path('api/user/register', views.UserCreate.as_view()),
     # new and improved views
     path('api/home', views.home),
-    path('api/listing', views.listing),
+    path('api/addlisting', views.listing),
     path('api/register', views.registerUser),
-    path('api/addbook', views.addBook)
+    path('api/addbook', views.addBook),
+    path('api/login', views.loginUser)
 ]
