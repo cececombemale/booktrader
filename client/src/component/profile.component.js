@@ -15,29 +15,27 @@ export default class Profile extends Component {
         this.uploadBook = this.uploadBook.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
-    async componentDidMount() {
+   async componentDidMount() {
         if (localStorage.getItem("token") == null) {
             this.setState({
                 navigate: true
             })
         }
 
-        try {
-            const res = await fetch('http://localhost:8000/api/profile', {
-                headers: {
-                    Authorization: `JWT ${localStorage.getItem('token')}`
-                }
-            });
-            const reply = await res.json();
-            console.log(reply)
-            // TODO: Add check to see if returned in good
-            this.setState({
-                username: reply.username,
-                email: reply.email,
-            });
-        } catch (e) {
-            console.log(e);
-        }
+
+        const res =  await fetch('http://localhost:8000/api/profile', {
+            headers: {
+                Authorization: `JWT ${localStorage.getItem('token')}`
+            }
+        });
+        const reply = await res.json();
+        console.log(reply)
+        // TODO: Add check to see if returned in good
+        this.setState({
+            username: reply.username,
+            email: reply.email,
+        });
+
 
 
         if (localStorage.getItem("token") != null) {
@@ -53,7 +51,7 @@ export default class Profile extends Component {
     uploadBook(event) {
         event.preventDefault();
         console.log("HELLO")
-        console.log(this.state.isbn,"empty")
+        console.log(this.state.isbn, "empty")
 
         let formdata = new FormData(event.target);
         fetch('http://localhost:8000/api/addbook', {
@@ -61,7 +59,7 @@ export default class Profile extends Component {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             },
             method: 'POST',
-            body:formdata,
+            body: formdata,
         }).then(response => {
             console.log(response)
         })
@@ -72,7 +70,7 @@ export default class Profile extends Component {
             [e.target.name]: e.target.value
         });
     }
-    
+
     render() {
         const { navigate } = this.state
 
