@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import Search from "../media/search.svg"
-import { Link, Redirect } from "react-router-dom";
+import {Redirect } from "react-router-dom";
 
 export default class Landing extends Component {
     constructor(props){

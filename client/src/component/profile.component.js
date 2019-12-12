@@ -143,8 +143,8 @@ export default class Profile extends Component {
                                 <form onSubmit={this.uploadBook}>
                                     <input name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
                                     <input name="title" required id="title" placeholder="title" onChange={this.handleChange}></input>
-                                    <input name="author" require id="author" placeholder="author" onChange={this.handleChange}></input>
-                                    <input name="edition" require id="edition" placeholder="edition" onChange={this.handleChange}></input>
+                                    <input name="author" required id="author" placeholder="author" onChange={this.handleChange}></input>
+                                    <input name="edition" required id="edition" placeholder="edition" onChange={this.handleChange}></input>
                                     <button type="submit"   >Submit</button>
                                 </form>
                             </div>

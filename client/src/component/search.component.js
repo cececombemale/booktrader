@@ -17,7 +17,6 @@ export default class Search extends Component {
         let search = window.location.search;
         let params = new URLSearchParams(search);
         let query = params.get('query');
-        let failed = false;
         if (query != null) {
 
             // Search with previous landing page query
@@ -40,7 +39,6 @@ export default class Search extends Component {
             } catch (e) {
                 console.log("ERROR: SEARCH FAILED!")
                 console.log("DEFAULTING...")
-                failed = true;
             }
         }
 
