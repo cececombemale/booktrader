@@ -140,6 +140,9 @@ export default class Profile extends Component {
                                 </div>
                             </div>
                             <div id="profileBooks">
+                                <div>Upload Listings:</div>
+                                <div id="successWrap"><span id="success">Success!</span></div>
+                                <div id="failed">Failed...</div>
                                 <form onSubmit={this.uploadBook}>
                                     <input name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
                                     <input name="title" required id="title" placeholder="title" onChange={this.handleChange}></input>

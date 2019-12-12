@@ -15,6 +15,17 @@ a{
   text-align: center;
   display:none;
 }
+#successWrap{
+  display:none;
+}
+#success{
+  color:green;
+  
+}
+#failed{
+  color:red;
+  display:none;
+}
 #navbar {
   height: 60px;
   background-color: #fff;
