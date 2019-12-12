@@ -32,7 +32,7 @@ export default class Profile extends Component {
         console.log(reply)
         // TODO: Add check to see if returned in good
         this.setState({
-            username: reply.username,
+            first_name: reply.first_name,
             email: reply.email,
         });
 
@@ -83,7 +83,7 @@ export default class Profile extends Component {
                 <div id="profilePadder">
                     <div id="profile">
                         <div>
-                            <h1 id="profileWelcome"> Welcome, <span className="cap">{this.state.username}</span>!</h1>
+                            <h1 id="profileWelcome"> Welcome, <span className="cap">{this.state.first_name}</span>!</h1>
                             <div id="email" >( Email: <a href={"mailto:" + this.state.email}>{this.state.email}</a> )</div>
                         </div>
                         <div className="row">
