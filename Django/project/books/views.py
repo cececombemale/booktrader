@@ -7,6 +7,7 @@ from rest_framework import permissions, status
 from django.http import HttpResponse
 from books.serializers import BookSerializer, ListingSerializer, UserSerializer, UserSerializerWithToken
 from django.views.decorators.csrf import csrf_exempt
+import json
 
 @api_view(['GET'])
 def current_user(request):
@@ -26,6 +27,7 @@ class BookListCreate(generics.ListCreateAPIView):
 class ListingListCreate(generics.ListCreateAPIView):
     queryset = Listing.objects.all()
     serializer_class = ListingSerializer
+    permission_classes = (permissions.AllowAny,)
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
@@ -53,11 +55,10 @@ def profile(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
-@csrf_exempt
+# -- Accessed in profile --
+@csrf_exempt # TODO: add CSRF token somewhere in frontend? On login/register?
 def addBook(request):
     if request.method == 'POST':
-        # form = 6(request.POST)
-        print(request.POST)
         new_book = Book()
         new_book.isbn = request.POST['isbn']
         new_book.title = request.POST['title']
@@ -67,14 +68,21 @@ def addBook(request):
         return HttpResponse("Success")
     else:
         return HttpResponse("please use POST request")
-# Custom user registration view from https://stackoverflow.com/questions/16857450/how-to-register-users-in-django-rest-framework#29391122
-# @api_view(['POST'])
-# def create_auth(request):
-#     serialized = UserSerializer(data=request.DATA)
-#     if serialized.is_valid():
-#         User.objects.create_user(
-#             serialized.data['email'],
-#             serialized.data['username'],
-#             serialized.data['password'],
-#         )
-#         return Response(serialized.data, status=status.HTTP_201_CREATED)
+
+@csrf_exempt
+def userListing(request):
+    print(request.user)
+    if request.method == 'POST':
+        new_listing = Listing()
+        new_listing.user = request.user
+        new_listing.isbn = request.POST['isbn'] # should only be able to pick from those available
+        new_listing.condition = request.POST['condition']
+        new_listing.price = request.POST['price']
+        new_listing.save()
+        return HttpResponse("Success")
+    else:
+        try:
+            listings = Listing.objects.filter(user=request.user).prefetch_related('Book')
+        except TypeError:
+            listings = None
+        return HttpResponse(json.dumps(listings))

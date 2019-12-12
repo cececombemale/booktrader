@@ -11,7 +11,7 @@ class BookSerializer(serializers.ModelSerializer):
 class ListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
-        fields = ('isbn', 'user', 'condition', 'added_at')
+        fields = ('isbn', 'user', 'condition', 'price', 'added_at')
 
 class UserSerializerWithToken(serializers.ModelSerializer):
     token = serializers.SerializerMethodField()
