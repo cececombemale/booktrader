@@ -24,7 +24,7 @@ function App() {
             </Link>
           </div>
           <Link to="/">
-            <h1 id="title">
+            <h1 id="mainTitle">
               BOOK
             </h1>
           </Link>

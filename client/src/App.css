@@ -50,7 +50,7 @@ a{
 #navLogout{
   display:none;
 }
-#title {
+#mainTitle {
   margin-left: 20px;
   font-family: 'Helvetica', 'Arial', sans-serif;
   color: #333333;
@@ -318,4 +318,6 @@ a{
 
 #locationIcon{
   height:15px;
+}
+.bookInput{
 }

@@ -37,6 +37,7 @@ export default class Login extends Component {
             .then(res => res.json())
             .then(json => {
                 if (json.token != null) {
+                    console.log(json.token)
                     localStorage.setItem('token', json.token);
                     // Set Redirect
                     this.setState({
@@ -51,7 +52,7 @@ export default class Login extends Component {
     buttonCheck(e) {
         // Handle Enter Press
         if (e.keyCode === 13) {
-            this.handleSubmit() 
+            this.handleSubmit()
         }
     }
     componentDidMount() {

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom"
 
@@ -17,7 +16,7 @@ export default class Profile extends Component {
     }
     async componentDidMount() {
         // Redirect to Login if token not found. 
-        if (localStorage.getItem("token") == null) {
+        if (localStorage.getItem("token") === undefined) {
             this.setState({
                 navigate: true
             })
@@ -47,7 +46,7 @@ export default class Profile extends Component {
 
 
         // Check if logged in
-        if (localStorage.getItem("token") != null) {
+        if (localStorage.getItem("token") != null && localStorage.getItem("token") !== undefined) {
             document.getElementById("navProfile").style.display = "flex"
             document.getElementById("navLogout").style.display = "flex"
             document.getElementById("navLogin").style.display = "none"
@@ -143,11 +142,11 @@ export default class Profile extends Component {
                                 <div>Upload Listings:</div>
                                 <div id="successWrap"><span id="success">Success!</span></div>
                                 <div id="failed">Failed...</div>
-                                <form onSubmit={this.uploadBook}>
-                                    <input name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
-                                    <input name="title" required id="title" placeholder="title" onChange={this.handleChange}></input>
-                                    <input name="author" required id="author" placeholder="author" onChange={this.handleChange}></input>
-                                    <input name="edition" required id="edition" placeholder="edition" onChange={this.handleChange}></input>
+                                <form id="loginBody" onSubmit={this.uploadBook}>
+                                    <input className = "bookInput" name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
+                                    <input className = "bookInput" name="title" required id="title" placeholder="title" onChange={this.handleChange}></input>
+                                    <input className = "bookInput" name="author" required id="author" placeholder="author" onChange={this.handleChange}></input>
+                                    <input className = "bookInput" name="edition" required id="edition" placeholder="edition" onChange={this.handleChange}></input>
                                     <button type="submit"   >Submit</button>
                                 </form>
                             </div>

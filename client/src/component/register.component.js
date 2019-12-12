@@ -57,8 +57,10 @@ export default class Register extends Component {
             })
                 .then(res => res.json())
                 .then(json => {
-                    localStorage.setItem('token', json.token);
-                    console.log(json)
+                    if(json.token != null){
+                        localStorage.setItem('token', json.token);
+
+                    }
                     if (json.token != null) {
                         this.setState({
                             navigate: true
