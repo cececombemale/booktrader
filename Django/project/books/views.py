@@ -2,10 +2,10 @@
 from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from books.models import Book, Has, User
+from books.models import Book, Listing, User
 from rest_framework import permissions, status
 from django.http import HttpResponse
-from books.serializers import BookSerializer, HasSerializer, UserSerializer, UserSerializerWithToken
+from books.serializers import BookSerializer, ListingSerializer, UserSerializer, UserSerializerWithToken
 from django.views.decorators.csrf import csrf_exempt
 
 @api_view(['GET'])
@@ -23,9 +23,9 @@ class BookListCreate(generics.ListCreateAPIView):
     serializer_class = BookSerializer
     permission_classes = (permissions.AllowAny,)
 
-class HasListCreate(generics.ListCreateAPIView):
-    queryset = Has.objects.all()
-    serializer_class = HasSerializer
+class ListingListCreate(generics.ListCreateAPIView):
+    queryset = Listing.objects.all()
+    serializer_class = ListingSerializer
 
 class UserList(generics.ListAPIView):
     queryset = User.objects.all()
