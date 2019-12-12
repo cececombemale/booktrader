@@ -1,16 +1,16 @@
 from rest_framework import serializers
 from rest_framework_jwt.settings import api_settings
 
-from books.models import Book, Has, User
+from books.models import Book, Listing, User
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ('isbn', 'title', 'author', 'edition')
 
-class HasSerializer(serializers.ModelSerializer):
+class ListingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Has
+        model = Listing
         fields = ('isbn', 'user', 'condition', 'added_at')
 
 class UserSerializerWithToken(serializers.ModelSerializer):

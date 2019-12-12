@@ -8,7 +8,7 @@ class Book(models.Model):
     author = models.CharField(max_length=40)
     edition = models.IntegerField(default=1)
 
-class Has(models.Model):
+class Listing(models.Model):
     isbn = models.ForeignKey(Book, on_delete=models.PROTECT) # Ensure an owned book is never deleted
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     VERY_POOR = "VP"
