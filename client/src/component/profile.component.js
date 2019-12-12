@@ -15,29 +15,38 @@ export default class Profile extends Component {
         this.uploadBook = this.uploadBook.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
-   async componentDidMount() {
+    async componentDidMount() {
+        // Redirect to Login if token not found. 
         if (localStorage.getItem("token") == null) {
             this.setState({
                 navigate: true
             })
         }
 
-
-        const res =  await fetch('http://localhost:8000/api/profile', {
+        // Use Token and get user Profile & name. 
+        const res = await fetch('http://localhost:8000/api/profile', {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             }
         });
         const reply = await res.json();
-        console.log(reply)
-        // TODO: Add check to see if returned in good
+        
+        // If token expired then logout & redirect to login.
+        if(reply.detail === "Signature has expired."){
+            localStorage.clear();
+            this.setState({
+                navigate:true
+            })
+        }
+
+        // Assign name and Email. 
         this.setState({
             first_name: reply.first_name,
             email: reply.email,
         });
 
 
-
+        // Check if logged in
         if (localStorage.getItem("token") != null) {
             document.getElementById("navProfile").style.display = "flex"
             document.getElementById("navLogout").style.display = "flex"
@@ -50,9 +59,8 @@ export default class Profile extends Component {
     }
     uploadBook(event) {
         event.preventDefault();
-        console.log("HELLO")
-        console.log(this.state.isbn, "empty")
 
+        // Attach token and upload book. 
         let formdata = new FormData(event.target);
         fetch('http://localhost:8000/api/addbook', {
             headers: {
@@ -64,7 +72,9 @@ export default class Profile extends Component {
             console.log(response)
         })
     }
+
     handleChange(e) {
+        // Update state variables.
         console.log(e.target.name + " and " + e.target.value)
         this.setState({
             [e.target.name]: e.target.value
@@ -72,8 +82,9 @@ export default class Profile extends Component {
     }
 
     render() {
-        const { navigate } = this.state
 
+        // Redirect to Login if token not found. 
+        const { navigate } = this.state
         if (navigate) {
             return <Redirect to="/login" push={true} />
         }

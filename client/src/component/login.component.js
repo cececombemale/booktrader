@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { Link , Redirect} from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 
 export default class Login extends Component {
@@ -9,19 +9,21 @@ export default class Login extends Component {
         this.state = {
             username: "joe",
             password: "",
-            navigate:false
+            navigate: false
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.buttonCheck = this.buttonCheck.bind(this)
     }
     handleChange(e) {
-        console.log(e.target.name + " and " + e.target.value)
+        // Update al State variables
         this.setState({
             [e.target.name]: e.target.value
         });
     }
-    handleSubmit(e) {
-        console.log("username is : ",this.state.username)
+
+    handleSubmit() {
+        // Login  & fetch token to store. 
         fetch('http://localhost:8000/token-auth/', {
             method: 'POST',
             headers: {
@@ -34,25 +36,29 @@ export default class Login extends Component {
         })
             .then(res => res.json())
             .then(json => {
-                
-                if(json.token != null){
-                    console.log(json)
-                    localStorage.setItem('token',json.token);
-
+                if (json.token != null) {
+                    localStorage.setItem('token', json.token);
+                    // Set Redirect
                     this.setState({
-                        navigate:true
+                        navigate: true
                     })
-                }else{
+                } else {
                     console.log("Login Failed")
+                    document.getElementById("checker").style.display = "block";
                 }
-                // localStorage.setItem('token', json.token);
             });
     }
+    buttonCheck(e) {
+        // Handle Enter Press
+        if (e.keyCode === 13) {
+            this.handleSubmit() 
+        }
+    }
     componentDidMount() {
-
+        // Check if logged in 
         if (localStorage.getItem("token") != null) {
             this.setState({
-                navigate:true
+                navigate: true
             })
             document.getElementById("navProfile").style.display = "flex"
             document.getElementById("navLogout").style.display = "flex"
@@ -64,6 +70,8 @@ export default class Login extends Component {
         }
     }
     render() {
+
+        // Redirect if logged in 
         const { navigate } = this.state
         if (navigate) {
             return <Redirect to="/profile" push={true} />
@@ -74,8 +82,9 @@ export default class Login extends Component {
                 <div id="loginBox">
                     <h1 id="loginTitle">Login</h1>
                     <div id="loginBody">
+                        <div id="checker"> Check your Username & Password again</div>
                         <input name="username" onChange={this.handleChange} placeholder="Username"></input>
-                        <input type="password" name="password" onChange={this.handleChange} placeholder="Password"></input>
+                        <input onKeyDown={this.buttonCheck} type="password" name="password" onChange={this.handleChange} placeholder="Password"></input>
                         <button onClick={this.handleSubmit} >Login</button>
                     </div>
 
