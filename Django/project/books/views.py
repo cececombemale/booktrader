@@ -75,7 +75,11 @@ def userListing(request):
     if request.method == 'POST':
         new_listing = Listing()
         new_listing.user = request.user
-        new_listing.isbn = request.POST['isbn'] # should only be able to pick from those available
+        try:
+            book = Book.objects.get(pk=request.POST['isbn'])
+        except:
+            return HttpResponse("Failed - please use a book in the DB")
+        new_listing.isbn = book
         new_listing.condition = request.POST['condition']
         new_listing.price = request.POST['price']
         new_listing.save()
