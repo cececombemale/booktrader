@@ -24,5 +24,6 @@ class Listing(models.Model):
         (LIKE_NEW, "Like New"),
     ]
     condition = models.CharField(max_length=2, choices=CONDITION_CHOICES, default=GOOD)
+    price = models.DecimalField(max_digits=8, decimal_places=2)
     added_at = models.DateTimeField(auto_now_add=True)
 
