@@ -37,7 +37,7 @@ export default class Search extends Component {
     async handleSearch() {
         console.log("SEARCH: ", this.state.query)
         var client = new elasticsearch.Client({
-            host: '10.17.184.201:9200/',
+            host: 'http://localhost:9200', // Change this to wherever the elasticsearch server is
         });
         const response = await client.search({
             q: this.state.query
