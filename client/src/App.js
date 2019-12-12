@@ -13,6 +13,7 @@ import Profile from "./component/profile.component"
 import Logo from "./media/logo.svg"
 
 function App() {
+  
   return (
     <div className="App">
       <Router>
@@ -30,19 +31,24 @@ function App() {
           <div id="grower">
 
           </div>
-          <div id="navitem">
+          <div className="navitem">
             <Link to="search">
               Search
               </Link>
           </div>
-          <div id="navitem">
+          <div className="navitem" id="navProfile">
             <Link to="profile">
               My Profile
               </Link>
           </div>
-          <div id="navitem">
+          <div className="navitem" id="navLogin">
             <Link to="login">
               Login/Register
+              </Link>
+          </div>
+          <div className="navitem" id="navLogout">
+            <Link to="/" onClick={ () => localStorage.removeItem("token")}>
+              Logout
               </Link>
           </div>
 

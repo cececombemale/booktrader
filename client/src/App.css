@@ -19,8 +19,20 @@ a{
   align-items: center;
   box-shadow: 0 2px 2px -2px rgba(0, 0, 0, .2);
 }
-#navitem{
+.navitem{
   margin-left:20px;
+}
+.cap{
+  text-transform: capitalize;
+}
+#email{
+  color:grey;
+}
+#navProfile{
+  display:none;
+}
+#navLogout{
+  display:none;
 }
 #title {
   margin-left: 20px;

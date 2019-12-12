@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Link, Redirect } from "react-router-dom";
-
+import Cookies from 'universal-cookie'
 
 export default class Register extends Component {
     constructor(props) {
@@ -17,6 +17,20 @@ export default class Register extends Component {
         this.handleChange = this.handleChange.bind(this)
         this.submitData = this.submitData.bind(this)
     }
+    componentDidMount() {
+        if(localStorage.getItem("token") != null){
+            this.setState({
+                navigate:true
+            })
+            document.getElementById("navProfile").style.display = "flex"
+            document.getElementById("navLogout").style.display = "flex"
+            document.getElementById("navLogin").style.display = "none"
+        }else{
+            document.getElementById("navProfile").style.display = "none"
+            document.getElementById("navLogout").style.display = "none"
+            document.getElementById("navLogin").style.display = "flex"
+        }
+    }
     handleChange(e) {
         console.log(e.target.name + " and " + e.target.value)
         this.setState({
@@ -25,9 +39,7 @@ export default class Register extends Component {
     }
     submitData() {
         // Check if register is correctedly filled here.
-        this.setState({
-            navigate:false
-        })
+        
         try {
             fetch("http://localhost:8000/api/user/register", {
                 method: "post",
@@ -45,9 +57,16 @@ export default class Register extends Component {
                 })
 
             })
-                .then((response) => {
-                    console.log(response)
-
+                .then(res =>res.json())
+                .then(json => {
+                    localStorage.setItem('token',json.token);
+                    console.log(json)
+                    if(json.token != null){
+                        this.setState({
+                            navigate:true
+                        })
+                    } 
+                    //TODO: Handle faillure
                 });
 
         } catch (e) {
@@ -58,7 +77,7 @@ export default class Register extends Component {
         const { navigate } = this.state
 
         if (navigate) {
-            return <Redirect to="/" push={true} />
+            return <Redirect to="/profile" push={true} />
         }
 
         return (
@@ -70,7 +89,7 @@ export default class Register extends Component {
                         <input name="last_name" onChange={this.handleChange} placeholder="Last Name"></input>
                         <input name="email" onChange={this.handleChange} placeholder="Email"></input>
                         <input name="username" onChange={this.handleChange} placeholder="Username"></input>
-                        <input name="password" onChange={this.handleChange} placeholder="Password"></input>
+                        <input type="password" name="password" onChange={this.handleChange} placeholder="Password"></input>
                         <button onClick={this.submitData}>Create Account</button>
                     </div>
 
