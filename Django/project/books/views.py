@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from books.serializers import BookSerializer, ListingSerializer, UserSerializer, UserSerializerWithToken
 from django.views.decorators.csrf import csrf_exempt
 import json
+from django.core import serializers
 
 @api_view(['GET'])
 def current_user(request):
@@ -87,7 +88,8 @@ def userListing(request):
         return HttpResponse("Success")
     else:
         try:
-            listings = Listing.objects.filter(user=request.user).prefetch_related('Book')
+            listings = Listing.objects.filter(user=request.user).prefetch_related('Book__isbn')
         except TypeError:
             listings = None
-        return HttpResponse(json.dumps(listings))
+        print(serializers.serialize("json", listings))
+        return HttpResponse(serializers.serialize("json", listings))
