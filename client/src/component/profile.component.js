@@ -29,12 +29,12 @@ export default class Profile extends Component {
             }
         });
         const reply = await res.json();
-        
+
         // If token expired then logout & redirect to login.
-        if(reply.detail === "Signature has expired."){
+        if (reply.detail === "Signature has expired.") {
             localStorage.clear();
             this.setState({
-                navigate:true
+                navigate: true
             })
         }
 
@@ -61,20 +61,24 @@ export default class Profile extends Component {
 
         // Attach token and upload book. 
         let formdata = new FormData(event.target);
-        fetch('http://localhost:8000/api/addbook', {
-            headers: {
-                Authorization: `JWT ${localStorage.getItem('token')}`
-            },
-            method: 'POST',
-            body: formdata,
-        }).then(response => {
-            console.log(response)
-        })
+        try {
+            fetch('http://localhost:8000/api/listing/list', {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                },
+                method: 'POST',
+                body: formdata,
+            }).then(response => {
+                console.log(response)
+            })
+        }catch(e){
+                console.log("UPLOAD FAILED")
+        }
+        
     }
 
     handleChange(e) {
         // Update state variables.
-        console.log(e.target.name + " and " + e.target.value)
         this.setState({
             [e.target.name]: e.target.value
         });
@@ -143,10 +147,10 @@ export default class Profile extends Component {
                                 <div id="successWrap"><span id="success">Success!</span></div>
                                 <div id="failed">Failed...</div>
                                 <form id="loginBody" onSubmit={this.uploadBook}>
-                                    <input className = "bookInput" name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
-                                    <input className = "bookInput" name="title" required id="title" placeholder="title" onChange={this.handleChange}></input>
-                                    <input className = "bookInput" name="author" required id="author" placeholder="author" onChange={this.handleChange}></input>
-                                    <input className = "bookInput" name="edition" required id="edition" placeholder="edition" onChange={this.handleChange}></input>
+                                    <input className="bookInput" name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
+                                    <input className="bookInput" name="title" required id="title" placeholder="title" onChange={this.handleChange}></input>
+                                    <input className="bookInput" name="author" required id="author" placeholder="author" onChange={this.handleChange}></input>
+                                    <input className="bookInput" name="edition" required id="edition" placeholder="edition" onChange={this.handleChange}></input>
                                     <button type="submit"   >Submit</button>
                                 </form>
                             </div>
