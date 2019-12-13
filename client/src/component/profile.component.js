@@ -67,8 +67,9 @@ export default class Profile extends Component {
                     Authorization: `JWT ${localStorage.getItem('token')}`
                 },
                 method: 'GET',
-            }).then(response => {
-                console.log(response)
+            }).then(response => response.json())
+            .then(json =>{
+                console.log(json);
             })
         } catch (e) {
             console.log("FETCH FAILED")
