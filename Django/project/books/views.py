@@ -88,7 +88,11 @@ def userListing(request):
         return HttpResponse("Success")
     else:
         try:
-            listings = Listing.objects.filter(user=request.user).prefetch_related('Book__isbn')
+            listings = list(Listing.objects.filter(user=request.user).prefetch_related('isbn'))
+            books = []
+            for listing in listings:
+                books.append(listing.isbn)
+            listings += books
         except TypeError:
             listings = None
         print(serializers.serialize("json", listings))
