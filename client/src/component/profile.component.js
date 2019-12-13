@@ -13,6 +13,7 @@ export default class Profile extends Component {
             username: "",
             email: "",
         }
+        this.uploadListing = this.uploadListing.bind(this)
         this.uploadBook = this.uploadBook.bind(this)
         this.handleChange = this.handleChange.bind(this)
     }
@@ -200,7 +201,7 @@ export default class Profile extends Component {
                                 <form id="loginBody" onSubmit={this.uploadListing}>
                                     <input className="bookInput" name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
                                     {/* <input className="bookInput" name="condition" required id="condition" placeholder="condition" onChange={this.handleChange}></input> */}
-                                    <select id="Condition" >
+                                    <select id="condition" name="condition">
                                         <option value="VP">Very Poor</option>
                                         <option value="P">Poor</option>
                                         <option value="O">Okay</option>
