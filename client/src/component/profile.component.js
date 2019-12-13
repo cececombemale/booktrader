@@ -210,7 +210,7 @@ export default class Profile extends Component {
                                     <input className="bookInput" name="price" required id="price" placeholder="price" onChange={this.handleChange}></input>
                                     <button type="submit"   >Submit</button>
                                 </form>
-                                <div>Upload Listings:</div>
+                                <div>Upload Book:</div>
                                 <div id="successWrapBook"><span id="success">Success!</span></div>
                                 <div id="failedBook">Failed...</div>
                                 <form id="loginBody" onSubmit={this.uploadBook}>

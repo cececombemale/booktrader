@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 ]
 
 
-ELASTICSEARCH_DSL={
+ELASTICSEARCH_DSL = {
     'default': {
         'hosts': 'localhost:9200'
     },
@@ -78,6 +78,7 @@ REST_FRAMEWORK = {
 }
 ROOT_URLCONF = 'project.urls'
 JWT_AUTH = {
+    'JWT_VERIFY_EXPIRATION': False,
     'JWT_RESPONSE_PAYLOAD_HANDLER': 'project.utils.my_jwt_response_handler'
 }
 TEMPLATES = [
