@@ -22,10 +22,21 @@ a{
   color:green;
   
 }
+#successWrapBook{
+  display:none;
+}
 #failed{
   color:red;
   display:none;
 }
+#failedBook{
+  color:red;
+  display:none;
+} 
+#qualityOptions{
+  margin:20px;
+}
+
 #navbar {
   height: 60px;
   background-color: #fff;
@@ -67,6 +78,9 @@ a{
 #content{
   flex:1;
   display:flex;
+}
+#Condition{
+  margin-top:20px;
 }
 #landing{
   display:flex;
