@@ -48,6 +48,7 @@ class UserCreate(generics.CreateAPIView):
         
 @api_view(['GET'])
 def profile(request):
+    print(request.user)
     """
     Determine the current user by their token, and return their data
     """
@@ -69,7 +70,7 @@ def addBook(request):
     else:
         return HttpResponse("please use POST request")
 
-@csrf_exempt
+@api_view(['POST','GET'])
 def userListing(request):
     print(request.user)
     if request.method == 'POST':

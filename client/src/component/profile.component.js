@@ -6,10 +6,12 @@ export default class Profile extends Component {
         super(props);
         this.state = {
             isbn: "",
-            title: "",
-            author: "",
-            edition: "",
-            navigate: false
+            condition:"",
+            price:"",
+            navigate: false,
+            first_name:"",
+            username:"",
+            email: "",
         }
         this.uploadBook = this.uploadBook.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -42,6 +44,7 @@ export default class Profile extends Component {
         this.setState({
             first_name: reply.first_name,
             email: reply.email,
+            username:reply.username,
         });
 
 
@@ -55,14 +58,31 @@ export default class Profile extends Component {
             document.getElementById("navLogout").style.display = "none"
             document.getElementById("navLogin").style.display = "flex"
         }
+
+        // Get listing
+        try {
+            fetch('http://localhost:8000/api/listing/', {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                },
+                method: 'GET',
+            }).then(response => {
+                console.log(response)
+            })
+        }catch(e){
+                console.log("FETCH FAILED")
+        }
+
     }
     uploadBook(event) {
         event.preventDefault();
 
         // Attach token and upload book. 
         let formdata = new FormData(event.target);
+        formdata.append("user",this.state.username)
+        formdata.append("added_at",new Date())
         try {
-            fetch('http://localhost:8000/api/listing/list', {
+            fetch('http://localhost:8000/api/listing/', {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`
                 },
@@ -70,6 +90,10 @@ export default class Profile extends Component {
                 body: formdata,
             }).then(response => {
                 console.log(response)
+                if(response.status === 200){
+                    document.getElementById("successWrap").style.display = "block"
+
+                }
             })
         }catch(e){
                 console.log("UPLOAD FAILED")
@@ -148,9 +172,8 @@ export default class Profile extends Component {
                                 <div id="failed">Failed...</div>
                                 <form id="loginBody" onSubmit={this.uploadBook}>
                                     <input className="bookInput" name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
-                                    <input className="bookInput" name="title" required id="title" placeholder="title" onChange={this.handleChange}></input>
-                                    <input className="bookInput" name="author" required id="author" placeholder="author" onChange={this.handleChange}></input>
-                                    <input className="bookInput" name="edition" required id="edition" placeholder="edition" onChange={this.handleChange}></input>
+                                    <input className="bookInput" name="condition" required id="condition" placeholder="condition" onChange={this.handleChange}></input>
+                                    <input className="bookInput" name="price" required id="price" placeholder="price" onChange={this.handleChange}></input>
                                     <button type="submit"   >Submit</button>
                                 </form>
                             </div>
