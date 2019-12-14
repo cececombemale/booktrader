@@ -80,12 +80,12 @@ def userListing(request):
         try:
             book = Book.objects.get(pk=request.POST['isbn'])
         except:
-            return HttpResponse("Failed - please use a book in the DB")
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         new_listing.isbn = book
         new_listing.condition = request.POST['condition']
         new_listing.price = request.POST['price']
         new_listing.save()
-        return HttpResponse("Success")
+        return Response(status=status.HTTP_201_CREATED)
     else:
         
         try:

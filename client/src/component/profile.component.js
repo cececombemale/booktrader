@@ -5,9 +5,6 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isbn: "",
-            condition: "",
-            price: "",
             navigate: false,
             first_name: "",
             username: "",
@@ -143,14 +140,16 @@ export default class Profile extends Component {
                 method: 'POST',
                 body: formdata,
             })
-                // .then(response => response.json())
                 .then(response => {
                     console.log(response)
-                    if (response.status === 200) {
-                        // console.log(response.json())
+                    if (response.status === 201) {
                         document.getElementById("successWrap").style.display = "block"
+                        document.getElementById("failed").style.display = "none"
+                        document.getElementById("isbn").value = ""
+                        document.getElementById("price").value = ""
                         this.getListings()
                     } else {
+                        document.getElementById("successWrap").style.display = "none"
                         document.getElementById("failed").style.display = "block"
                     }
                 })
