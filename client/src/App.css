@@ -142,7 +142,7 @@ a{
   background: #2b303b;
   width:100%;
   padding:20px;
-  /* overflow-y:scroll; */
+  overflow-y:visible;
 }
 
 #mainsearch input#search{
@@ -150,10 +150,9 @@ a{
 }
 
 #searchBody{
-  overflow-y:visible;
+  /* overflow-y:visible; */
   margin:auto;
   background:white;
-  height:100%;
   margin-top:40px;
   width:80%;
   -webkit-border-radius: 5px;

@@ -87,6 +87,7 @@ def userListing(request):
         new_listing.save()
         return HttpResponse("Success")
     else:
+        
         try:
             listings = list(Listing.objects.filter(user=request.user).prefetch_related('isbn'))
             books = []
@@ -96,4 +97,4 @@ def userListing(request):
         except TypeError:
             listings = None
         print(serializers.serialize("json", listings))
-        return HttpResponse(serializers.serialize("json", listings))
+        return HttpResponse(serializers.serialize("json",listings))
