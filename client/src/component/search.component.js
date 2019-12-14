@@ -45,7 +45,7 @@ export default class Search extends Component {
         try {
             const res = await fetch('http://localhost:8000/api/book/?format=json');
             const booklist = await res.json();
-
+            console.log(booklist)
             this.setState({
                 booklist
             });
@@ -64,6 +64,27 @@ export default class Search extends Component {
             document.getElementById("navLogout").style.display = "none"
             document.getElementById("navLogin").style.display = "flex"
         }
+
+        // Get Default List of books
+        let formData = new FormData();
+        formData.append("isbn", "123")
+        try {
+            const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                },
+                method: 'POST',
+                body: formData
+            });
+            const booklist = await res.json();
+            console.log(booklist)
+        } catch (e) {
+            console.log(e)
+            console.log("ISBN SEARCH FAILURE")
+        }
+
+
+
     }
     async handleSearch(e) {
         // Elastic Search
@@ -119,7 +140,7 @@ export default class Search extends Component {
                                     <div>
                                         Author: <span> {item.author}</span>
                                     </div>
-                                    <div>New York, NY 10003</div>
+
                                 </div>
 
                                 <div id="grower"></div>
@@ -129,11 +150,10 @@ export default class Search extends Component {
                                 <span>
                                         {item.isbn}
                                     </span>
-                                    <div>
-                                        Value: $40
-                                </div>
+
                                 </div>
                             </div>
+                            <div> HELLO</div>
 
                         </div>
                     ))}

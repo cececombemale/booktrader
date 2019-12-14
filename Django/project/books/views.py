@@ -99,7 +99,7 @@ def userListing(request):
         print(serializers.serialize("json", listings))
         return HttpResponse(serializers.serialize("json",listings))
 
-@api_view(['GET'])
+@api_view(['POST'])
 def listingsFromISBN(request):
     try:
         listings = list(Listing.objects.filter(isbn=request.POST['isbn']))
