@@ -142,7 +142,7 @@ a{
   background: #2b303b;
   width:100%;
   padding:20px;
-  overflow-y:scroll;
+  /* overflow-y:scroll; */
 }
 
 #mainsearch input#search{

@@ -18,20 +18,18 @@ export default class Search extends Component {
         let params = new URLSearchParams(search);
         let query = params.get('query');
         if (query != null) {
-
             // Search with previous landing page query
             var client = new elasticsearch.Client({
                 host: 'http://localhost:9200', // Change this to wherever the elasticsearch server is
             });
             try {
                 const response = await client.search({
-                    q: this.state.query
+                    q: query
                 })
                 let booklist = []
                 for (let i = 0; i < response.hits.hits.length; i++) {
                     booklist.push(response.hits.hits[i]["_source"])
                 }
-
                 this.setState({
                     booklist: booklist
                 })

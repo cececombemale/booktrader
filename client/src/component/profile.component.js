@@ -12,6 +12,7 @@ export default class Profile extends Component {
             first_name: "",
             username: "",
             email: "",
+            listings: [],
         }
         this.uploadListing = this.uploadListing.bind(this)
         this.uploadBook = this.uploadBook.bind(this)
@@ -60,6 +61,15 @@ export default class Profile extends Component {
             document.getElementById("navLogin").style.display = "flex"
         }
 
+        let getCondition = {
+            "VP": "Very Poor",
+            "P": "Poor",
+            "O": "Okay",
+            "G": "Good",
+            "LN": "Like New"
+        }
+
+
         // Get listing
         try {
             fetch('http://localhost:8000/api/listing/', {
@@ -68,9 +78,48 @@ export default class Profile extends Component {
                 },
                 method: 'GET',
             }).then(response => response.json())
-            .then(json =>{
-                console.log(json);
-            })
+                .then(json => {
+                    console.log(json)
+                    let listings = []
+                    let books = []
+                    for (let i = 0; i < json.length; i++) {
+                        if (json[i].model === "books.listing") {
+                            listings.push({
+                                time: json[i].fields.added_at,
+                                condition: getCondition[json[i].fields.condition],
+                                isbn: json[i].fields.isbn,
+                                price: json[i].fields.price,
+                                author: "",
+                                title: "",
+                                edition: "",
+                            })
+                        }
+                        else {
+                            books.push({
+                                author: json[i].fields.author,
+                                edition: json[i].fields.edition,
+                                title: json[i].fields.title,
+                                isbn: json[i].pk,
+                            })
+                        }
+                    }
+                    for (let i = 0; i < listings.length; i++) {
+                        for (let k = 0; k < books.length; k++) {
+                            if (listings[i].isbn === books[k].isbn) {
+                                listings[i].author = books[k].author
+                                listings[i].title = books[i].title
+                                listings[i].edition = books[i].edition
+                            }
+                            if (i === listings.length - 1 && k === books.length - 1) {
+                                console.log(listings)
+                                console.log(books)
+                                this.setState({
+                                    listings: listings
+                                })
+                            }
+                        }
+                    }
+                })
         } catch (e) {
             console.log("FETCH FAILED")
         }
@@ -154,45 +203,28 @@ export default class Profile extends Component {
                             <div id="email" >( Email: <a href={"mailto:" + this.state.email}>{this.state.email}</a> )</div>
                         </div>
                         <div className="row">
-
                             <div id="listings">
                                 <div>Your Listings:</div>
                                 <div id="listingBody">
-                                    <div id="listItem">
-                                        <div>
+                                    {this.state.listings.map(item => (
+                                        <div id="listItem">
                                             <div>
-                                                <div id="listingTitle">
-                                                    Basic Quantum Mechanics <span id="statusNew">NEW!</span>
-                                                </div>
                                                 <div>
-                                                    Author: <span> Kyriakos Tamvakis</span>
+                                                    <div id="listingTitle">
+                                                        {item.title} <span id="statusNew">{item.condition}</span>
+                                                    </div>
+                                                    <div>
+                                                        Author: <span>{item.author}</span>
+                                                    </div>
+                                                    <div>New York, NY 10003</div>
                                                 </div>
-                                                <div>New York, NY 10003</div>
-                                            </div>
-                                            <div id="grower"></div>
-                                            <div id="grower"></div>
-                                            <div id="right">ISBN:<span>3030227766</span><div>Value: $40                          </div>
+                                                <div id="grower"></div>
+                                                <div id="grower"></div>
+                                                <div id="right">ISBN:<span>{item.isbn}</span><div>Value: ${item.price}                          </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div id="listItem">
-                                        <div>
-                                            <div>
-                                                <div id="listingTitle">
-                                                    Basic Quantum Mechanics <span id="statusNew">NEW!</span>
-                                                </div>
-                                                <div>
-                                                    Author: <span> Kyriakos Tamvakis</span>
-                                                </div>
-                                                <div>New York, NY 10003</div>
-                                            </div>
-                                            <div id="grower"></div>
-                                            <div id="grower"></div>
-                                            <div id="right">ISBN:<span>3030227766</span><div>Value: $40                          </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                    ))}
                                 </div>
                             </div>
                             <div id="profileBooks">
@@ -202,7 +234,7 @@ export default class Profile extends Component {
                                 <form id="loginBody" onSubmit={this.uploadListing}>
                                     <input className="bookInput" name="isbn" required id="isbn" placeholder="isbn" onChange={this.handleChange}></input>
                                     {/* <input className="bookInput" name="condition" required id="condition" placeholder="condition" onChange={this.handleChange}></input> */}
-                                    <select id="condition" name="condition">
+                                    <select id="Condition" name="condition">
                                         <option value="VP">Very Poor</option>
                                         <option value="P">Poor</option>
                                         <option value="O">Okay</option>

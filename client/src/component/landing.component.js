@@ -13,11 +13,12 @@ export default class Landing extends Component {
         }
 
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
     }
     handleChange(e) {
-        // Update al State variables
+        // Update State variable
         this.setState({
-            [e.target.name]: e.target.value
+            query: e.target.value
         });
     }
     handleSubmit(e) {
@@ -51,7 +52,7 @@ export default class Landing extends Component {
                     <h1 id="search-title">Welcome</h1>
                     <div className="search-container">
                         <img alt="Search Icon" className="icon" src={Search}></img>
-                        <input onKeyDown={this.handleSubmit} autoComplete="off"  id="search" placeholder="Search... (ISBN)"></input>
+                        <input onChange={this.handleChange} onKeyDown={this.handleSubmit} autoComplete="off"  id="search" placeholder="Search... (ISBN)"></input>
                     </div>
                     <div id="subtext">
                         ( Input the ISBN and we'll find the book for you! )
