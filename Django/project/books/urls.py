@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/profile',views.profile),
     path('api/addbook', views.addBook),
     path('api/listing/', views.userListing),
+    path('api/listingfromisbn/', views.listingFromISBN),
 ]

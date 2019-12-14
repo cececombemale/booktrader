@@ -98,3 +98,11 @@ def userListing(request):
             listings = None
         print(serializers.serialize("json", listings))
         return HttpResponse(serializers.serialize("json",listings))
+
+@api_view(['GET'])
+def listingsFromISBN(request):
+    try:
+        listings = list(Listing.objects.filter(isbn=request.POST['isbn']))
+    except TypeError:
+        listings = None
+    return HttpResponse(serializers.serialize("json", listings))
