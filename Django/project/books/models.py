@@ -9,8 +9,8 @@ class Book(models.Model):
     edition = models.IntegerField(default=1)
 
 class Listing(models.Model):
-    isbn = models.ForeignKey(Book, on_delete=models.PROTECT, related_name='listing') # Ensure an owned book is never deleted
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    isbn = models.ForeignKey(Book, on_delete=models.PROTECT) # Ensure an owned book is never deleted
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     VERY_POOR = "VP"
     POOR = "P"
     OKAY = "O"
