@@ -13,12 +13,14 @@ pip install -r requirements.txt`
 
 ## Build elasticsearch package
 ### download elastic search package - mac os
-`wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.5.0-darwin-x86_64.tar.gz
-tar -xzf elasticsearch-7.5.0-darwin-x86_64.tar.gz`
+```wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.5.0-darwin-x86_64.tar.gz```
+
+```tar -xzf elasticsearch-7.5.0-darwin-x86_64.tar.gz```
 
 ### download elastic search package - linux
-`wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.5.0-linux-x86_64.tar.gz
-tar -xzf elasticsearch-7.5.0-linux-x86_64.tar.gz`
+```wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.5.0-linux-x86_64.tar.gz```
+
+```tar -xzf elasticsearch-7.5.0-linux-x86_64.tar.gz```
 
 
 ### run elastic search server
