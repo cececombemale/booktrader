@@ -17,6 +17,69 @@ export default class Profile extends Component {
         this.uploadListing = this.uploadListing.bind(this)
         this.uploadBook = this.uploadBook.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.getListings = this.getListings.bind(this)
+    }
+
+    getListings() {
+        let getCondition = {
+            "VP": "Very Poor",
+            "P": "Poor",
+            "O": "Okay",
+            "G": "Good",
+            "LN": "Like New"
+        }
+
+
+        // Get listing
+        try {
+            fetch('http://localhost:8000/api/listing/', {
+                headers: {
+                    Authorization: `JWT ${localStorage.getItem('token')}`
+                },
+                method: 'GET',
+            }).then(response => response.json())
+                .then(json => {
+                    let listings = []
+                    let books = []
+                    for (let i = 0; i < json.length; i++) {
+                        if (json[i].model === "books.listing") {
+                            listings.push({
+                                time: json[i].fields.added_at,
+                                condition: getCondition[json[i].fields.condition],
+                                isbn: json[i].fields.isbn,
+                                price: json[i].fields.price,
+                                author: "",
+                                title: "",
+                                edition: "",
+                            })
+                        }
+                        else {
+                            books.push({
+                                author: json[i].fields.author,
+                                edition: json[i].fields.edition,
+                                title: json[i].fields.title,
+                                isbn: json[i].pk,
+                            })
+                        }
+                    }
+                    for (let i = 0; i < listings.length; i++) {
+                        for (let k = 0; k < books.length; k++) {
+                            if (listings[i].isbn === books[k].isbn) {
+                                listings[i].author = books[k].author
+                                listings[i].title = books[i].title
+                                listings[i].edition = books[i].edition
+                            }
+                            if (i === listings.length - 1 && k === books.length - 1) {
+                                this.setState({
+                                    listings: listings
+                                })
+                            }
+                        }
+                    }
+                })
+        } catch (e) {
+            console.log("FETCH FAILED")
+        }
     }
     async componentDidMount() {
         // Redirect to Login if token not found. 
@@ -61,68 +124,8 @@ export default class Profile extends Component {
             document.getElementById("navLogin").style.display = "flex"
         }
 
-        let getCondition = {
-            "VP": "Very Poor",
-            "P": "Poor",
-            "O": "Okay",
-            "G": "Good",
-            "LN": "Like New"
-        }
+        this.getListings()
 
-
-        // Get listing
-        try {
-            fetch('http://localhost:8000/api/listing/', {
-                headers: {
-                    Authorization: `JWT ${localStorage.getItem('token')}`
-                },
-                method: 'GET',
-            }).then(response => response.json())
-                .then(json => {
-                    console.log(json)
-                    let listings = []
-                    let books = []
-                    for (let i = 0; i < json.length; i++) {
-                        if (json[i].model === "books.listing") {
-                            listings.push({
-                                time: json[i].fields.added_at,
-                                condition: getCondition[json[i].fields.condition],
-                                isbn: json[i].fields.isbn,
-                                price: json[i].fields.price,
-                                author: "",
-                                title: "",
-                                edition: "",
-                            })
-                        }
-                        else {
-                            books.push({
-                                author: json[i].fields.author,
-                                edition: json[i].fields.edition,
-                                title: json[i].fields.title,
-                                isbn: json[i].pk,
-                            })
-                        }
-                    }
-                    for (let i = 0; i < listings.length; i++) {
-                        for (let k = 0; k < books.length; k++) {
-                            if (listings[i].isbn === books[k].isbn) {
-                                listings[i].author = books[k].author
-                                listings[i].title = books[i].title
-                                listings[i].edition = books[i].edition
-                            }
-                            if (i === listings.length - 1 && k === books.length - 1) {
-                                console.log(listings)
-                                console.log(books)
-                                this.setState({
-                                    listings: listings
-                                })
-                            }
-                        }
-                    }
-                })
-        } catch (e) {
-            console.log("FETCH FAILED")
-        }
 
     }
     uploadListing(event) {
@@ -139,15 +142,19 @@ export default class Profile extends Component {
                 },
                 method: 'POST',
                 body: formdata,
-            }).then(response => {
-                console.log(response)
-                if (response.status === 200) {
-                    document.getElementById("successWrap").style.display = "block"
-
-                } else {
-                    document.getElementById("failed").style.display = "block"
-                }
             })
+                // .then(response => response.json())
+                .then(response => {
+                    console.log(response)
+                    if (response.status === 200) {
+                        // console.log(response.json())
+                        document.getElementById("successWrap").style.display = "block"
+                        this.getListings()
+                    } else {
+                        document.getElementById("failed").style.display = "block"
+                    }
+                })
+
         } catch (e) {
             console.log("UPLOAD FAILED")
         }
@@ -166,7 +173,7 @@ export default class Profile extends Component {
                 method: 'POST',
                 body: formdata,
             }).then(response => {
-                console.log(response)
+                console.log(response.body)
                 if (response.status === 200) {
                     document.getElementById("successWrapBook").style.display = "block"
 
@@ -207,7 +214,7 @@ export default class Profile extends Component {
                                 <div>Your Listings:</div>
                                 <div id="listingBody">
                                     {this.state.listings.map(item => (
-                                        <div id="listItem">
+                                        <div id="listItem" key={item.isbn +item.time}>
                                             <div>
                                                 <div>
                                                     <div id="listingTitle">
