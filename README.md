@@ -29,3 +29,13 @@ pip install -r requirements.txt`
 
 ### build indexing in elastic search server
 `python manage.py search_index --rebuild`
+
+
+### Enable Cors to send Cross Domain Request
+Add this to the /config/elasticsearch.yml file
+```
+http.cors.enabled : true
+http.cors.allow-origin : "*"
+http.cors.allow-methods : OPTIONS, HEAD, GET, POST, PUT, DELETE
+http.cors.allow-headers : X-Requested-With,X-Auth-Token,Content-Type, Content-Length
+```
