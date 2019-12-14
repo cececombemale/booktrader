@@ -1,10 +1,21 @@
-from django_elasticsearch_dsl import Document
+from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
-from .models import Book
+from .models import Book, Listing
 
 
 @registry.register_document
 class BookDocument(Document):
+    listing = fields.NestedField(properties={
+        'condition': fields.TextField(),
+        'price': fields.FloatField(),
+        'added_at': fields.DateField(),
+        'user' : fields.NestedField(properties={
+                'first_name': fields.TextField(),
+                'last_name': fields.TextField(),
+                'email': fields.TextField()
+                })
+    })
+
     class Index:
         # Name of the Elasticsearch index
         name = 'books'
@@ -22,3 +33,5 @@ class BookDocument(Document):
             'author',
             'edition',
         ]
+
+        related_models = [Listing]
