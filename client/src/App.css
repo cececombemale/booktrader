@@ -175,6 +175,20 @@ a{
   margin-bottom:20px;
   
 }
+.listingDrop{
+  margin-left:20px;
+  margin-bottom:0px !important;
+  flex-direction:column;
+  display:none;
+}
+.listingChild{
+  border:2px solid #eee;
+  border-width: 0px 0px 0px 1px;
+  padding:0px 0px 0px 10px;
+  margin:5px 0px 5px 0px;
+  display:flex;
+  width:100%;
+}
 
 #statusNew{
   color:green;
@@ -333,5 +347,5 @@ a{
 #locationIcon{
   height:15px;
 }
-.bookInput{
-}
+
+

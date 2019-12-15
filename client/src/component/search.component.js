@@ -40,15 +40,46 @@ export default class Search extends Component {
             }
         }
 
-
+        let getCondition = {
+            "VP": "Very Poor",
+            "P": "Poor",
+            "O": "Okay",
+            "G": "Good",
+            "LN": "Like New"
+        }
         // Get Default List of books
         try {
             const res = await fetch('http://localhost:8000/api/book/?format=json');
             const booklist = await res.json();
             console.log(booklist)
-            this.setState({
-                booklist
-            });
+            for (let i = 0; i < booklist.length; i++) {
+                // Change price
+                // Get Listing
+                let formData = new FormData();
+                formData.append("isbn", booklist[i].isbn)
+                try {
+                    const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
+                        headers: {
+                            Authorization: `JWT ${localStorage.getItem('token')}`
+                        },
+                        method: 'POST',
+                        body: formData
+                    });
+                    const listing = await res.json();
+                    for (let k = 0; k < listing.length; k++) {
+                        listing[k].fields.condition = getCondition[listing[k].fields.condition]
+                    }
+                    booklist[i].listings = listing
+                } catch (e) {
+                    console.log(e)
+                    console.log("ISBN SEARCH FAILURE")
+                }
+                this.setState({
+                    booklist
+                });
+
+            }
+
         } catch (e) {
             console.log("DEFAULT SEARCH FAILURE")
         }
@@ -65,23 +96,7 @@ export default class Search extends Component {
             document.getElementById("navLogin").style.display = "flex"
         }
 
-        // Get Default List of books
-        let formData = new FormData();
-        formData.append("isbn", "123")
-        try {
-            const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
-                headers: {
-                    Authorization: `JWT ${localStorage.getItem('token')}`
-                },
-                method: 'POST',
-                body: formData
-            });
-            const booklist = await res.json();
-            console.log(booklist)
-        } catch (e) {
-            console.log(e)
-            console.log("ISBN SEARCH FAILURE")
-        }
+
 
 
 
@@ -119,6 +134,9 @@ export default class Search extends Component {
         })
         console.log(this.state.query)
     }
+    getListings(e) {
+
+    }
     render() {
         return (
             <div id="search-background">
@@ -128,11 +146,11 @@ export default class Search extends Component {
                 </div>
                 <div id="searchBody">
                     {this.state.booklist.map(item => (
-                        <div id="bookItem" key={item.isbn}>
+                        <div id="bookItem" key={item.isbn} onClick={this.getListings}>
                             <div>
                                 <div>
                                     <div id="bookTitle">
-                                        {item.title} <span id="statusNew">NEW!</span>
+                                        {item.title}
                                     </div>
                                     <div>
                                         Edition: <span>{item.edition}</span>
@@ -153,7 +171,21 @@ export default class Search extends Component {
 
                                 </div>
                             </div>
-                            <div> HELLO</div>
+                            <div className="listingDrop">
+                                {item.listings.map(listing => (
+                                    <div className = "listingChild" key={listing.fields.added_at}>
+                                        <div>
+                                            <span id="statusNew">{listing.fields.condition}</span>
+
+                                            <div>
+                                                User: {listing.fields.user}
+                                            </div>
+                                        </div>
+                                        <div id="grower"></div>
+                                        <div>  Value: ${listing.fields.price}</div>
+                                    </div>
+                                ))}
+                            </div>
 
                         </div>
                     ))}
