@@ -9,6 +9,10 @@ from books.serializers import BookSerializer, ListingSerializer, UserSerializer,
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.core import serializers
+from django.shortcuts import render
+def index(request):
+    return render(request, "build/index.html")
+
 
 @api_view(['GET'])
 def current_user(request):
