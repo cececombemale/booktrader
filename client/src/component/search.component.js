@@ -11,6 +11,7 @@ export default class Search extends Component {
         };
         this.handleSearch = this.handleSearch.bind(this)
         this.updateState = this.updateState.bind(this)
+        this.formatDate = this.formatDate.bind(this)
     }
     async componentDidMount() {
         // Handle redirect from landing page search
@@ -134,8 +135,19 @@ export default class Search extends Component {
         })
         console.log(this.state.query)
     }
-    getListings(e) {
-
+    
+    formatDate(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+    
+        if (month.length < 2) 
+            month = '0' + month;
+        if (day.length < 2) 
+            day = '0' + day;
+    
+        return [year, month, day].join('-');
     }
     render() {
         return (
@@ -146,7 +158,7 @@ export default class Search extends Component {
                 </div>
                 <div id="searchBody">
                     {this.state.booklist.map(item => (
-                        <div id="bookItem" key={item.isbn} onClick={this.getListings}>
+                        <div id="bookItem" key={item.isbn} >
                             <div>
                                 <div>
                                     <div id="bookTitle">
@@ -182,7 +194,10 @@ export default class Search extends Component {
                                             </div>
                                         </div>
                                         <div id="grower"></div>
-                                        <div>  Value: ${listing.fields.price}</div>
+                                        <div className = "listingRight">  
+                                            Value: ${listing.fields.price}
+                                            <div>{this.formatDate(listing.fields.added_at)}</div>
+                                        </div>
                                     </div>
                                 ))}
                             </div>

@@ -181,6 +181,9 @@ a{
   flex-direction:column;
   display:none;
 }
+.listingRight{
+  text-align: right;
+}
 .listingChild{
   border:2px solid #eee;
   border-width: 0px 0px 0px 1px;
