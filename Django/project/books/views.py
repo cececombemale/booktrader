@@ -1,6 +1,6 @@
 # from django.shortcuts import render
 from rest_framework import generics
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from books.models import Book, Listing, User
 from rest_framework import permissions, status
@@ -100,6 +100,7 @@ def userListing(request):
         return HttpResponse(serializers.serialize("json",listings))
 
 @api_view(['POST'])
+@permission_classes([permissions.AllowAny])
 def listingsFromISBN(request):
     try:
         listings = list(Listing.objects.filter(isbn=request.POST['isbn']))

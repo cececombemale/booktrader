@@ -41,9 +41,7 @@ export default class Search extends Component {
                     formData.append("isbn", response.hits.hits[i]["_source"].isbn)
                     try {
                         const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
-                            headers: {
-                                Authorization: `JWT ${localStorage.getItem('token')}`
-                            },
+
                             method: 'POST',
                             body: formData
                         });
@@ -85,9 +83,7 @@ export default class Search extends Component {
                 formData.append("isbn", booklist[i].isbn)
                 try {
                     const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
-                        headers: {
-                            Authorization: `JWT ${localStorage.getItem('token')}`
-                        },
+ 
                         method: 'POST',
                         body: formData
                     });
