@@ -29,7 +29,7 @@ export default class Profile extends Component {
 
         // Get listing
         try {
-            fetch('http://localhost:8000/api/listing/', {
+            fetch('http://18.220.82.48:8000/api/listing/', {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`
                 },
@@ -87,7 +87,7 @@ export default class Profile extends Component {
         }
 
         // Use Token and get user Profile & name. 
-        const res = await fetch('http://localhost:8000/api/profile', {
+        const res = await fetch('http://18.220.82.48:8000/api/profile', {
             headers: {
                 Authorization: `JWT ${localStorage.getItem('token')}`
             }
@@ -133,7 +133,7 @@ export default class Profile extends Component {
         formdata.append("user", this.state.username)
         formdata.append("added_at", new Date())
         try {
-            fetch('http://localhost:8000/api/listing/', {
+            fetch('http://18.220.82.48:8000/api/listing/', {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`
                 },
@@ -165,7 +165,7 @@ export default class Profile extends Component {
         // Attach token to upload book.
         let formdata = new FormData(event.target);
         try {
-            fetch('http://localhost:8000/api/addbook', {
+            fetch('http://18.220.82.48:8000/api/addbook', {
                 headers: {
                     Authorization: `JWT ${localStorage.getItem('token')}`
                 },

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import '../App.css';
 import Search from "../media/search.svg"

@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import SearchIcon from "../media/search.svg"
 import elasticsearch from 'elasticsearch'
@@ -28,7 +27,7 @@ export default class Search extends Component {
         if (query != null) {
             // Search with previous landing page query
             var client = new elasticsearch.Client({
-                host: 'http://localhost:9200', // Change this to wherever the elasticsearch server is
+                host: 'http://18.220.82.48:9200', // Change this to wherever the elasticsearch server is
             });
             try {
                 const response = await client.search({
@@ -40,10 +39,7 @@ export default class Search extends Component {
                     let formData = new FormData();
                     formData.append("isbn", response.hits.hits[i]["_source"].isbn)
                     try {
-                        const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
-                            headers: {
-                                Authorization: `JWT ${localStorage.getItem('token')}`
-                            },
+                        const res = await fetch('http://18.220.82.48:8000/api/listingsfromisbn/', {
                             method: 'POST',
                             body: formData
                         });
@@ -77,17 +73,14 @@ export default class Search extends Component {
 
         // Get Default List of books
         try {
-            const res = await fetch('http://localhost:8000/api/book/?format=json');
+            const res = await fetch('http://18.220.82.48:8000/api/book/?format=json');
             const booklist = await res.json();
             for (let i = 0; i < booklist.length; i++) {
                 // Get Listing
                 let formData = new FormData();
                 formData.append("isbn", booklist[i].isbn)
                 try {
-                    const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
-                        headers: {
-                            Authorization: `JWT ${localStorage.getItem('token')}`
-                        },
+                    const res = await fetch('http://18.220.82.48:8000/api/listingsfromisbn/', {
                         method: 'POST',
                         body: formData
                     });
@@ -145,7 +138,7 @@ export default class Search extends Component {
         if (e.keyCode === 13) {
             console.log("SEARCH QUERY:  ", this.state.query)
             var client = new elasticsearch.Client({
-                host: 'http://localhost:9200', // Change this to wherever the elasticsearch server is
+                host: 'http://18.220.82.48:9200', // Change this to wherever the elasticsearch server is
             });
             try {
                 const response = await client.search({
@@ -157,10 +150,7 @@ export default class Search extends Component {
                     let formData = new FormData();
                     formData.append("isbn", response.hits.hits[i]["_source"].isbn)
                     try {
-                        const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
-                            headers: {
-                                Authorization: `JWT ${localStorage.getItem('token')}`
-                            },
+                        const res = await fetch('http://18.220.82.48:8000/api/listingsfromisbn/', {
                             method: 'POST',
                             body: formData
                         });

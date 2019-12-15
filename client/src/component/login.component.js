@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Link, Redirect } from "react-router-dom";
 
@@ -24,7 +23,7 @@ export default class Login extends Component {
 
     handleSubmit() {
         // Login  & fetch token to store. 
-        fetch('http://localhost:8000/token-auth/', {
+        fetch('http://18.220.82.48:8000/token-auth/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

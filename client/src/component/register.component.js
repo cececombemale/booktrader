@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { Link, Redirect } from "react-router-dom";
 
@@ -41,7 +40,7 @@ export default class Register extends Component {
     submitData() {
         // Check if register is correctedly filled here.
         try {
-            fetch("http://localhost:8000/api/user/register", {
+            fetch("http://18.220.82.48:8000/api/user/register", {
                 method: "post",
                 headers: {
                     'Content-Type': 'application/json'

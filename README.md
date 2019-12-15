@@ -25,7 +25,11 @@ tar -xzf elasticsearch-7.5.0-darwin-x86_64.tar.gz
 wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.5.0-linux-x86_64.tar.gz
 tar -xzf elasticsearch-7.5.0-linux-x86_64.tar.gz
 ```
-
+### edit the jvm.options file for aws free tier usage (utilize less RAM)
+```
+-Xms256m
+-Xmx256m
+```
 
 ### run elastic search server
 ```
@@ -46,4 +50,19 @@ http.cors.enabled : true
 http.cors.allow-origin : "*"
 http.cors.allow-methods : OPTIONS, HEAD, GET, POST, PUT, DELETE
 http.cors.allow-headers : X-Requested-With,X-Auth-Token,Content-Type, Content-Length
+```
+
+### Add public access to Elastic Search service
+Add this to the /config/elasticsearch.yml file
+```
+transport.host: localhost
+transport.tcp.port: 9300
+http.port: 9200
+network.host: 0.0.0.0
+```
+
+### rerun elastic search server
+```
+cd elasticsearch-7.5.0/bin
+./elasticsearch
 ```
