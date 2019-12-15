@@ -14,6 +14,13 @@ export default class Search extends Component {
         this.formatDate = this.formatDate.bind(this)
     }
     async componentDidMount() {
+        let getCondition = {
+            "VP": "Very Poor",
+            "P": "Poor",
+            "O": "Okay",
+            "G": "Good",
+            "LN": "Like New"
+        }
         // Handle redirect from landing page search
         let search = window.location.search;
         let params = new URLSearchParams(search);
@@ -29,7 +36,33 @@ export default class Search extends Component {
                 })
                 let booklist = []
                 for (let i = 0; i < response.hits.hits.length; i++) {
-                    booklist.push(response.hits.hits[i]["_source"])
+                    // get listing
+                    let formData = new FormData();
+                    formData.append("isbn", response.hits.hits[i]["_source"].isbn)
+                    try {
+                        const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
+                            headers: {
+                                Authorization: `JWT ${localStorage.getItem('token')}`
+                            },
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        let listing = await res.json();
+                        console.log(listing)
+                        // Get Condition Names
+                        for (let k = 0; k < listing.length; k++) {
+                            listing[k].fields.condition = getCondition[listing[k].fields.condition]
+                        }
+                        response.hits.hits[i]["_source"].listings = listing
+                        booklist.push(response.hits.hits[i]["_source"])
+                    } catch (e) {
+                        console.log(e)
+                        console.log("ISBN SEARCH FAILURE")
+                    }
+
+
+
                 }
                 this.setState({
                     booklist: booklist
@@ -41,20 +74,12 @@ export default class Search extends Component {
             }
         }
 
-        let getCondition = {
-            "VP": "Very Poor",
-            "P": "Poor",
-            "O": "Okay",
-            "G": "Good",
-            "LN": "Like New"
-        }
+
         // Get Default List of books
         try {
             const res = await fetch('http://localhost:8000/api/book/?format=json');
             const booklist = await res.json();
-            console.log(booklist)
             for (let i = 0; i < booklist.length; i++) {
-                // Change price
                 // Get Listing
                 let formData = new FormData();
                 formData.append("isbn", booklist[i].isbn)
@@ -66,20 +91,26 @@ export default class Search extends Component {
                         method: 'POST',
                         body: formData
                     });
-                    const listing = await res.json();
+
+                    let listing = await res.json();
+                    // Get Condition Names
                     for (let k = 0; k < listing.length; k++) {
                         listing[k].fields.condition = getCondition[listing[k].fields.condition]
                     }
                     booklist[i].listings = listing
+                    this.setState({
+                        booklist
+                    });
                 } catch (e) {
                     console.log(e)
                     console.log("ISBN SEARCH FAILURE")
                 }
-                this.setState({
-                    booklist
-                });
+
 
             }
+            this.setState({
+                booklist
+            });
 
         } catch (e) {
             console.log("DEFAULT SEARCH FAILURE")
@@ -103,6 +134,13 @@ export default class Search extends Component {
 
     }
     async handleSearch(e) {
+        let getCondition = {
+            "VP": "Very Poor",
+            "P": "Poor",
+            "O": "Okay",
+            "G": "Good",
+            "LN": "Like New"
+        }
         // Elastic Search
         if (e.keyCode === 13) {
             console.log("SEARCH QUERY:  ", this.state.query)
@@ -115,7 +153,30 @@ export default class Search extends Component {
                 })
                 let booklist = []
                 for (let i = 0; i < response.hits.hits.length; i++) {
-                    booklist.push(response.hits.hits[i]["_source"])
+                    // get listing
+                    let formData = new FormData();
+                    formData.append("isbn", response.hits.hits[i]["_source"].isbn)
+                    try {
+                        const res = await fetch('http://localhost:8000/api/listingsfromisbn/', {
+                            headers: {
+                                Authorization: `JWT ${localStorage.getItem('token')}`
+                            },
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        let listing = await res.json();
+                        console.log(listing)
+                        // Get Condition Names
+                        for (let k = 0; k < listing.length; k++) {
+                            listing[k].fields.condition = getCondition[listing[k].fields.condition]
+                        }
+                        response.hits.hits[i]["_source"].listings = listing
+                        booklist.push(response.hits.hits[i]["_source"])
+                    } catch (e) {
+                        console.log(e)
+                        console.log("ISBN SEARCH FAILURE")
+                    }
                 }
 
                 this.setState({
@@ -135,18 +196,18 @@ export default class Search extends Component {
         })
         console.log(this.state.query)
     }
-    
+
     formatDate(date) {
         var d = new Date(date),
             month = '' + (d.getMonth() + 1),
             day = '' + d.getDate(),
             year = d.getFullYear();
-    
-        if (month.length < 2) 
+
+        if (month.length < 2)
             month = '0' + month;
-        if (day.length < 2) 
+        if (day.length < 2)
             day = '0' + day;
-    
+
         return [year, month, day].join('-');
     }
     render() {
@@ -184,8 +245,8 @@ export default class Search extends Component {
                                 </div>
                             </div>
                             <div className="listingDrop">
-                                {item.listings.map(listing => (
-                                    <div className = "listingChild" key={listing.fields.added_at}>
+                                {item.listings ? item.listings.map(listing => (
+                                    <div className="listingChild" key={listing.fields.added_at}>
                                         <div>
                                             <span id="statusNew">{listing.fields.condition}</span>
 
@@ -194,12 +255,12 @@ export default class Search extends Component {
                                             </div>
                                         </div>
                                         <div id="grower"></div>
-                                        <div className = "listingRight">  
+                                        <div className="listingRight">
                                             Value: ${listing.fields.price}
                                             <div>{this.formatDate(listing.fields.added_at)}</div>
                                         </div>
                                     </div>
-                                ))}
+                                )) : "(EMPTY)"}
                             </div>
 
                         </div>
