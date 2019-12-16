@@ -10,10 +10,10 @@ Once connected to the site, go through the following guide for a tour of feature
 1. Click on the Login/Register tab in the upper right of the page and create a new user.
 2. You will be redirected to a profile page. Create a new book (any made up ISBN is fine,
 such as 1111111111, and any title/author/edition number) in the bottom form. If the ISBN is
-already in the DB, it will reject it. Then, create a listing in the top form of your new book
-(type it's isbn, e.g. 1111111111). The system will reject your listing if it is not for a
-book already registered in the DB. On success, you should see your new listing on the left
-hand side.
+already in the DB, it will overwrite the other book's title/author/edition. Then, create 
+a listing in the top form of your new book (type it's isbn, e.g. 1111111111). 
+The system will reject your listing if it is not for a book already registered in the DB. 
+On success, you should see your new listing on the left hand side.
 3. Go to the search tab and see all books currently in the DB with associated listings. Try
 searching for authors, titles, and ISBNs to see which books come up. You can search by a single
 word in a title/author's name, such as "Frank" for books by Frank Herbert. Note that on the fly,
@@ -46,6 +46,8 @@ wouldn't be ideal for this to be used in production; we intended for this to be 
 - Our Amazon EC2 instance appears to time out every couple hours or so. We aren't sure if this is
 an issue with elasticsearch eating up too much memory (a problem we have been having) or something
 else. Restarting the instance brings it back up.
+- If a book is added with an ISBN already present in the Books table, that book's title/author/edition
+will be overwritten but its listings will remain.
 
 # Instructions for building the app yourself (ignore for demo purposes)
 
