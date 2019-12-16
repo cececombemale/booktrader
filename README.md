@@ -48,6 +48,9 @@ an issue with elasticsearch eating up too much memory (a problem we have been ha
 else. Restarting the instance brings it back up.
 - If a book is added with an ISBN already present in the Books table, that book's title/author/edition
 will be overwritten but its listings will remain.
+- The listings on the lefthand side of the user profile page all include a "New York, NY" field. 
+This was hardcoded for development/design purposes while we worked out fields.
+
 
 # Instructions for building the app yourself (ignore for demo purposes)
 
